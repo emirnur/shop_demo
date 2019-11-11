@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, TemplateView
@@ -8,7 +8,6 @@ from webapp.models import Product, Order, OrderProduct
 
 
 class VisitMixin:
-
     def visit(self, request):
         visits = request.session.get('visits', [])
         old_page = request.session.get('old_page')
@@ -28,10 +27,10 @@ class VisitMixin:
             request.session['old_time'] = old_time
         else:
             visits = [[]]
-            visits[0][0] = request.session['old_page']
-            visits[0][1] = request.session['old_time']
+            visits[0][0] = request.session.get['old_page']
+            visits[0][1] = request.session.get['old_time']
             visits[0][2] = 1
-            request.session['visits'] = visits
+            request.session.get['visits'] = visits
 
 
 class IndexView(VisitMixin, ListView):
@@ -170,3 +169,9 @@ class BasketView(VisitMixin, CreateView):
             self.request.session.pop('products')
         if 'products_count' in self.request.session:
             self.request.session.pop('products_count')
+
+
+class StatisticView(View):
+    def get(self, request):
+        visits = request.session.get('visits', [])
+        return  render(request, 'stat_view.html', {'visits': visits})
