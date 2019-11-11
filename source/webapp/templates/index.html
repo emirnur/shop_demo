@@ -13,8 +13,10 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ product.name }}</h5>
                         <p class="card-text">{{ product.get_category_display }} | {{ product.price }} сом</p>
-                        <a href="{% url "webapp:product_detail" product.pk %}"
-                           class="btn btn-primary">Посмотреть</a>
+                        <p><a href="{% url "webapp:product_detail" product.pk %}"
+                           class="btn btn-primary">Посмотреть</a></p>
+                        <p><a href="{% url 'webapp:basket_change' %}?pk={{ product.pk }}&action=add"
+                           class="btn btn-primary">В корзину</a></p>
                     </div>
                 </div>
             </div>

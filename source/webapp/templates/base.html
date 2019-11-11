@@ -25,6 +25,7 @@
         </ul>
         <ul class="navbar-nav ml-auto">
             {% if request.user.is_authenticated %}
+                <li class="nav-item"><a href="{% url 'webapp:basket' %}" class="nav-link">Корзина ({{ request.session.products_count|default:0 }})</a></li>
                 <li class="nav-item"><a href="{% url 'accounts:detail' request.user.pk %}" class="nav-link">
                     Привет, {{ request.user.username }}!
                 </a></li>
@@ -43,6 +44,14 @@
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
-{% block scripts %}{% endblock %}
+{% block scripts %}
+    {% if basket and form.errors %}
+        <script type="application/javascript">
+            $(window).on('load', function(){
+                $('#orderModal').modal('show');
+            });
+        </script>
+    {% endif %}
+{% endblock %}
 </body>
 </html>
